@@ -1,0 +1,40 @@
+// 声明是 Android 程序
+apply plugin: 'com.android.application'
+
+android {
+    // 编译的 SDK 版本
+    compileSdkVersion 22
+    // build tools 版本
+    buildToolsVersion "22.0.1"
+
+    defaultConfig {
+        // 应用的包名
+        applicationId "com.github.keng42.keep"
+        minSdkVersion 16
+        targetSdkVersion 22
+        versionCode 1
+        versionName "1.0"
+    }
+
+    buildTypes {
+        release {
+            // 是否进行混淆
+            minifyEnabled false
+            // 混淆文件的位置
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    // 编译 libs 目录下所有 jar 包
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile 'com.android.support:appcompat-v7:22.2.0'
+    compile 'com.android.support:design:22.2.0'
+    compile 'com.android.support:cardview-v7:22.2.0'
+    compile 'com.android.support:recyclerview-v7:22.2.0'
+    compile 'com.google.android.gms:play-services:7.5.0'
+    compile 'com.jakewharton:butterknife:7.0.1'
+}
+
+

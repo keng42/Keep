@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group
+        android:id="@+id/group"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/item_all"
+            android:checked="true"
+            android:icon="@drawable/ic_material_lightbulb_light"
+            android:title="@string/entries"/>
+        <item
+            android:id="@+id/item_archive"
+            android:icon="@drawable/ic_material_archive_light"
+            android:title="@string/archive"/>
+    </group>
+    <group
+        android:id="@+id/group_folder"
+        android:checkableBehavior="single">
+    </group>
+    <group
+        android:id="@+id/group_tag"
+        android:checkableBehavior="single">
+    </group>
+    <group
+        android:id="@+id/group_location"
+        android:checkableBehavior="single">
+    </group>
+</menu>

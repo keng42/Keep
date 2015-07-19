@@ -1,0 +1,57 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme." parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="colorAccent">@color/accent</item>
+    </style>
+
+    <style name="AppTheme" parent="AppTheme."/>
+
+    <style name="TranslucentTheme" parent="AppTheme">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
+    <style name="PreviewIv">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">#eeeeee</item>
+        <item name="android:contentDescription">@string/iv</item>
+        <item name="android:scaleType">centerInside</item>
+    </style>
+
+    <!--安全码输入界面按钮-->
+    <style name="CodeButton">
+        <item name="android:background">?attr/selectableItemBackground</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:clickable">true</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_width">72dp</item>
+        <item name="android:layout_height">48dp</item>
+    </style>
+
+    <!--安全码输入框-->
+    <style name="EditTextCode">
+        <item name="android:layout_width">120dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:clickable">false</item>
+        <item name="android:cursorVisible">false</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:focusable">false</item>
+        <item name="android:focusableInTouchMode">false</item>
+        <item name="android:selectable">false</item>
+        <item name="android:state_long_pressable">false</item>
+        <item name="android:longClickable">false</item>
+        <item name="android:inputType">numberPassword</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="EditTextCode."/>
+
+</resources>

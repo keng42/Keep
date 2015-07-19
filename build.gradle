@@ -1,0 +1,21 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+    // 声明仓库的源，这里使用 jcenter 库
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        // 声明 android gradle plugin 版本
+        classpath 'com.android.tools.build:gradle:1.2.3'
+
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+// 为所有的工程的 repositories 配置为 jcenter
+allprojects {
+    repositories {
+        jcenter()
+    }
+}

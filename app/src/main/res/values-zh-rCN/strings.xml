@@ -1,0 +1,134 @@
+<resources>
+    <string name="app_name">Keep</string>
+
+    <string name="title_activity_home">主页</string>
+    <string name="title_activity_entry">条目详细</string>
+    <string name="title_activity_label">标签</string>
+    <string name="title_activity_place">地点</string>
+    <string name="title_activity_photo">图片</string>
+    <string name="title_activity_password">密码</string>
+
+    <string name="action_settings">设置</string>
+    <string name="entries">条目</string>
+    <string name="encrypted">已加密</string>
+    <string name="encrypt">加密</string>
+    <string name="archive">存档</string>
+    <string name="action_search">搜索</string>
+    <string name="search_hint">搜索…</string>
+    <string name="iv">图片</string>
+    <string name="no_folder">无文件夹</string>
+    <string name="et_title">标题</string>
+    <string name="et_text">正文</string>
+    <string name="delete">删除</string>
+    <string name="cancel">取消</string>
+    <string name="delete_photo">删除图片？</string>
+    <string name="undo">撤销</string>
+    <string name="archived">条目已存档</string>
+    <string name="action_change_folder">修改文件夹</string>
+    <string name="action_add_picture">添加图片</string>
+    <string name="action_archive">存档</string>
+    <string name="action_delete">删除条目</string>
+    <string name="action_change_place">修改地点</string>
+    <string name="action_change_labels">修改标签</string>
+    <string name="choose_image">从图库中选择</string>
+    <string name="take_photo">拍照</string>
+    <string name="add_label">添加标签</string>
+    <string name="create">创建</string>
+    <string name="rename_label">重命名标签</string>
+    <string name="delete_label">删除标签</string>
+    <string name="rename">重命名</string>
+    <string name="enter_a_label_name">输入标签名</string>
+    <string name="enter_a_folder_name">输入文件夹名</string>
+    <string name="label_exists">该标签已存在</string>
+    <string name="folder_exists">该文件夹已存在</string>
+    <string name="if_delete_label">删除标签？</string>
+    <string name="delete_label_waring">我们将删除该标签并从所有条目中移除，但条目不会被删除。</string>
+    <string name="delete_place_waring">我们将删除该地点并从所有条目中移除，但条目不会被删除。</string>
+    <string name="delete_entry_waring">我们将删除该条目，且不可撤销！</string>
+    <string name="entry_color">条目颜色</string>
+    <string name="pick_a_place">选择一个地点</string>
+    <string name="create_a_place">+ 新建一个地点</string>
+
+    <string name="place_name">地名</string>
+    <string name="place_description">输入地名或地址</string>
+    <string name="or_pick_a_place">或者选择一个地点</string>
+    <string name="powered_by_google">Powered by Google</string>
+    <string name="or">或者</string>
+    <string name="save">保存</string>
+    <string name="enter_a_place_name">输入地点名字</string>
+    <string name="place_exists">该地点已存在</string>
+    <string name="exit_without_save">未保存就退出？</string>
+    <string name="exit">退出</string>
+    <string name="rename_place">重命名地点</string>
+    <string name="delete_place">删除地点</string>
+    <string name="delete_entry">删除条目？</string>
+    <string name="unarchive">复原</string>
+
+    <!--folder color name-->
+    <string name="folder_color_name_1">白色</string>
+    <string name="folder_color_name_2">红色</string>
+    <string name="folder_color_name_3">橙色</string>
+    <string name="folder_color_name_4">黄色</string>
+    <string name="folder_color_name_5">灰色</string>
+    <string name="folder_color_name_6">蓝色</string>
+    <string name="folder_color_name_7">青色</string>
+    <string name="folder_color_name_8">绿色</string>
+
+    <string name="no_place">无地点</string>
+    <string name="rename_folder">重命名文件夹</string>
+    <string name="folder_name_changed">文件夹已重命名</string>
+    <string name="label">标签名</string>
+    <string name="folder">文件夹名</string>
+    <string name="action_delete_photo">删除</string>
+
+    <!--数字-->
+    <string name="num_0">0</string>
+    <string name="num_1">1</string>
+    <string name="num_2">2</string>
+    <string name="num_3">3</string>
+    <string name="num_4">4</string>
+    <string name="num_5">5</string>
+    <string name="num_6">6</string>
+    <string name="num_7">7</string>
+    <string name="num_8">8</string>
+    <string name="num_9">9</string>
+
+
+    <!--ImageView contentDescription-->
+    <string name="iv_logo_cd">JKi Logo</string>
+    <string name="iv_done_cd">验证安全码</string>
+    <string name="iv_backspace_cd">删除键</string>
+
+
+    <!--Set password activity-->
+    <string name="set_code_warning">一旦设置完毕，没有任何方法找回你的安全码和数据加密密钥。请确保记录在安全的地方！！！</string>
+    <string name="set_code">安全码（数字）</string>
+    <string name="set_key">数据加密密钥</string>
+    <string name="code_require">必须设置安全码（可为空但必须设置）</string>
+
+    <string name="tv_logo">在每一个美好的思想前停留</string>
+
+    <string name="power_by_google">Power by Google</string>
+    <string name="action_set_lang">English</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="no_label">空标签</string>
+    <string name="num_ok">OK</string>
+    <string name="title_activity_set_password">密码</string>
+    <string name="no_location">空地点</string>
+    <string name="action_reset_code">重置安全码</string>
+    <string name="change_password">修改密码？</string>
+    <string name="change">修改</string>
+    <string name="change_password_waring">修改密码会导致重新加密所有数据，这会消耗一些时间。非必要请不要修改密码。</string>
+    <string name="password_changed">密码已修改</string>
+    <string name="password_not_change">密码未修改</string>
+    <string name="password">密码</string>
+    <string name="confirm_password">验证密码</string>
+    <string name="reset">重置</string>
+    <string name="wrong_password">密码错误</string>
+    <string name="tv_encrypt">数据加密中</string>
+    <string name="tv_encrypt_ciphertext">密文重加密中</string>
+    <string name="tv_encrypting_clear_data">明文加密中</string>
+    <string name="tv_encrypting_photos">图片加密中</string>
+
+</resources>
+

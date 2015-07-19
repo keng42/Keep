@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--For Material design-->
+    <color name="primary_light">#BBDEFB</color>
+    <color name="primary">#2196F3</color>
+    <color name="primary_dark">#1976D2</color>
+
+    <color name="ripple">#4DB6AC</color>
+    <color name="accent">#009688</color>
+    <color name="accent_pressed">#00796B</color>
+
+    <!--common color-->
+    <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
+    <color name="label_background">#55111111</color>
+
+    <!--folder color-->
+    <!--entry activity background color-->
+    <color name="folder_1">#FFF5F5F5</color>
+    <color name="folder_2">#FFFF6D3F</color>
+    <color name="folder_3">#FFFF9700</color>
+    <color name="folder_4">#FFFFE900</color>
+    <color name="folder_5">#FFB8C4C9</color>
+    <color name="folder_6">#FF3FC3FF</color>
+    <color name="folder_7">#FF1CE8B5</color>
+    <color name="folder_8">#FF8AC249</color>
+
+    <!--toolbar color-->
+    <color name="toolbar_1">#AAAAAA</color>
+    <color name="toolbar_2">#FF6D3F</color>
+    <color name="toolbar_3">#FF9700</color>
+    <color name="toolbar_4">#FFC000</color>
+    <color name="toolbar_5">#9BADB6</color>
+    <color name="toolbar_6">#3FC3FF</color>
+    <color name="toolbar_7">#1CE8B5</color>
+    <color name="toolbar_8">#8AC249</color>
+
+    <!--system bar color-->
+    <color name="sysbar_1">#999999</color>
+    <color name="sysbar_2">#EA5F39</color>
+    <color name="sysbar_3">#F47B00</color>
+    <color name="sysbar_4">#F4A800</color>
+    <color name="sysbar_5">#8FA3AD</color>
+    <color name="sysbar_6">#00AFFF</color>
+    <color name="sysbar_7">#11C19F</color>
+    <color name="sysbar_8">#679E37</color>
+
+    <!--with images-->
+    <color name="toolbar_0">#33000000</color>
+    <color name="sysbar_0">#030303</color>
+</resources>

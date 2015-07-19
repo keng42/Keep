@@ -1,0 +1,39 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:context="science.keng42.keep.EntryActivity">
+
+    <item
+        android:id="@+id/action_change_folder"
+        android:icon="@drawable/ic_material_color_light"
+        android:title="@string/action_change_folder"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/action_add_picture"
+        android:icon="@drawable/ic_material_camera_light"
+        android:title="@string/action_add_picture"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/action_archive"
+        android:icon="@drawable/ic_material_archive_light"
+        android:title="@string/action_archive"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/action_delete"
+        android:orderInCategory="100"
+        android:title="@string/action_delete"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/action_change_labels"
+        android:orderInCategory="100"
+        android:title="@string/action_change_labels"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/action_change_place"
+        android:orderInCategory="100"
+        android:title="@string/action_change_place"
+        app:showAsAction="never"/>
+</menu>

@@ -1,0 +1,133 @@
+<resources>
+    <string name="app_name">Keep</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="entries">Entries</string>
+    <string name="encrypted">Encrypt</string>
+    <string name="encrypt">Encrypt</string>
+    <string name="archive">Archive</string>
+    <string name="action_search">Search</string>
+    <string name="search_hint">Search...</string>
+    <string name="iv">Image</string>
+    <string name="no_folder">No folder</string>
+    <string name="title_activity_entry">EntryActivity</string>
+    <string name="et_title">Title</string>
+    <string name="et_text">Text</string>
+    <string name="delete">Delete</string>
+    <string name="cancel">Cancel</string>
+    <string name="delete_photo">Delete Image?</string>
+    <string name="undo">UNDO</string>
+    <string name="archived">Entry archived</string>
+    <string name="action_change_folder">Change folder</string>
+    <string name="action_add_picture">Add picture</string>
+    <string name="action_archive">Archive</string>
+    <string name="action_delete">Delete entry</string>
+    <string name="action_change_place">Change place</string>
+    <string name="action_change_labels">Change labels</string>
+    <string name="choose_image">Choose image</string>
+    <string name="take_photo">Take photo</string>
+    <string name="add_label">Add label</string>
+    <string name="title_activity_label">LabelActivity</string>
+    <string name="create">Create</string>
+    <string name="rename_label">Rename label</string>
+    <string name="delete_label">Delete label</string>
+    <string name="rename">Rename</string>
+    <string name="enter_a_label_name">Enter a label name</string>
+    <string name="enter_a_folder_name">Enter a folder name</string>
+    <string name="label_exists">Label already exists</string>
+    <string name="folder_exists">Folder already exists</string>
+    <string name="if_delete_label">Delete label?</string>
+    <string name="delete_label_waring">We\'ll delete this label and remove it from all of your entries. Your entries won\'t be deleted.</string>
+    <string name="delete_place_waring">We\'ll delete this place and remove it from all of your entries. Your entries won\'t be deleted.</string>
+    <string name="delete_entry_waring">We\'ll delete this entry. This is irrevocable!</string>
+    <string name="entry_color">Entry color</string>
+    <string name="pick_a_place">Pick a place</string>
+    <string name="create_a_place">+ Create a new place</string>
+    <string name="title_activity_place">PlaceActivity</string>
+    <string name="place_name">Place name</string>
+    <string name="place_description">Enter place name or address</string>
+    <string name="or_pick_a_place">Or pick a place</string>
+    <string name="power_by_google">Power by Google</string>
+    <string name="powered_by_google">Powered by Google</string>
+    <string name="or">OR</string>
+    <string name="save">Save</string>
+    <string name="enter_a_place_name">Enter a place name</string>
+    <string name="place_exists">Place already exists.</string>
+    <string name="exit_without_save">Exit without save the place?</string>
+    <string name="exit">Exit</string>
+    <string name="rename_place">Rename place</string>
+    <string name="delete_place">Delete place</string>
+    <string name="delete_entry">Delete entry?</string>
+    <string name="unarchive">Unarchive</string>
+
+    <!--folder color name-->
+    <string name="folder_color_name_1">White</string>
+    <string name="folder_color_name_2">Red</string>
+    <string name="folder_color_name_3">Orange</string>
+    <string name="folder_color_name_4">Yellow</string>
+    <string name="folder_color_name_5">Grey</string>
+    <string name="folder_color_name_6">Blue</string>
+    <string name="folder_color_name_7">Teal</string>
+    <string name="folder_color_name_8">Green</string>
+    <string name="no_label">No label</string>
+    <string name="no_place">No place</string>
+    <string name="rename_folder">Rename folder</string>
+    <string name="folder_name_changed">Folder changed</string>
+    <string name="label">Label title</string>
+    <string name="folder">Folder name</string>
+    <string name="title_activity_photo">PhotoActivity</string>
+    <string name="action_delete_photo">Delete</string>
+
+
+    <!--数字-->
+    <string name="num_0">0</string>
+    <string name="num_1">1</string>
+    <string name="num_2">2</string>
+    <string name="num_3">3</string>
+    <string name="num_4">4</string>
+    <string name="num_5">5</string>
+    <string name="num_6">6</string>
+    <string name="num_7">7</string>
+    <string name="num_8">8</string>
+    <string name="num_9">9</string>
+    <string name="num_ok">OK</string>
+
+
+    <!--ImageView contentDescription-->
+    <string name="iv_logo_cd">JKi Logo</string>
+    <string name="iv_done_cd">Confirm secure code</string>
+    <string name="iv_backspace_cd">Backspace</string>
+
+    <!--Activity title-->
+    <string name="title_activity_set_password">SetPasswordActivity</string>
+
+    <!--Set password activity-->
+    <string name="set_code_warning">There is no where you can find your secure code or encryption key back,so make sure you won\'t forget them!!!</string>
+    <string name="set_code">Secure code(integer only)</string>
+    <string name="set_key">Data encryption key</string>
+    <string name="code_require">Require secure code(can be null but have to be set up)</string>
+
+    <!--MainActivity-->
+    <string name="no_location">No location</string>
+    <string name="title_activity_password">PasswordActivity</string>
+    <string name="tv_logo">Stay before every beautiful thoughts</string>
+    <string name="action_set_lang">中文</string>
+    <string name="action_reset_code">Reset security code</string>
+    <string name="change_password">Change password?</string>
+    <string name="change">Change</string>
+    <string name="change_password_waring">Change password will decrypt and reencrypt all data witch cost time. Only change your password if you have to.</string>
+    <string name="password_changed">Password changed</string>
+    <string name="password_not_change">Password not change</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="reset">Reset</string>
+    <string name="wrong_password">Wrong password</string>
+    <string name="tv_encrypt">Data encrypting</string>
+    <string name="tv_encrypting_clear_data">Encrypting clear data</string>
+    <string name="tv_encrypt_ciphertext">Encrypting ciphertext</string>
+    <string name="tv_encrypting_photos">Encrypting photos</string>
+
+</resources>
+
