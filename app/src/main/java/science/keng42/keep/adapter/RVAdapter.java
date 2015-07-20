@@ -19,7 +19,6 @@ import java.util.List;
 
 import science.keng42.keep.HomeActivity;
 import science.keng42.keep.R;
-import science.keng42.keep.bean.Card;
 import science.keng42.keep.model.EntryCard;
 import science.keng42.keep.util.BitmapLoaderTask;
 import science.keng42.keep.util.DisplayUtil;

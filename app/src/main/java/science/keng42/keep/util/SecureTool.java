@@ -23,6 +23,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import science.keng42.keep.MyApp;
+import science.keng42.keep.R;
 
 /**
  * 有关安全的工具类
