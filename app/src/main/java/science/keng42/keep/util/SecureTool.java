@@ -36,7 +36,7 @@ public final class SecureTool {
     private static final String TO_ENCRYPT = "ToEncrypt";
     private static final String PASSWORD_KEY = "Password";
     private static final String CRYPTO_IS_NOT_AVAILABLE = "Crypto 不可用，检查 Conceal 是否正确加载。";
-    private static final String SALT = "1SimpleSalt.com";
+    private static final String SALT = Secret.SALT;
     private static final String KEEP_CHARSET = "utf-8";
 
     private SecureTool() {

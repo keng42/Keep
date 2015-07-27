@@ -512,6 +512,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             switch (msg.what) {
                 case 1:
                     // 数据加密完成，进入主页面
+                    activity.mPd.cancel();
                     activity.finish();
                     Intent intent = new Intent(activity, HomeActivity.class);
                     activity.startActivity(intent);
