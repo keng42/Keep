@@ -129,6 +129,8 @@
     <string name="tv_encrypt_ciphertext">密文重加密中</string>
     <string name="tv_encrypting_clear_data">明文加密中</string>
     <string name="tv_encrypting_photos">图片加密中</string>
+    <string name="action_hide">设置文字透明度</string>
+    <string name="press_once_again">再按一次返回退出</string>
 
 </resources>
 

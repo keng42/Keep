@@ -2,6 +2,7 @@ package science.keng42.keep;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -21,6 +22,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -34,6 +36,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -405,6 +408,9 @@ public class EntryActivity extends AppCompatActivity {
                 break;
             case R.id.action_delete:
                 deleteEntry();
+                break;
+            case R.id.action_hide:
+                hideText();
                 break;
             default:
                 return super.onOptionsItemSelected(item);
@@ -1346,6 +1352,38 @@ public class EntryActivity extends AppCompatActivity {
                     }
                 })
                 .setNegativeButton(R.string.cancel, null).create().show();
+    }
+
+    /**
+     * 将文字颜色设为背景色
+     */
+    private void hideText() {
+        final SeekBar seekBar = (SeekBar) findViewById(R.id.sb_text_alpha);
+        RelativeLayout rl = (RelativeLayout) findViewById(R.id.rl_set_alpha);
+        rl.setVisibility(View.VISIBLE);
+        seekBar.setProgress((int) (mEtText.getAlpha() * 100));
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                mEtText.setAlpha(progress / 100F);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
+        });
+
+        rl.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                v.setVisibility(View.GONE);
+                return false;
+            }
+        });
     }
 
     /**

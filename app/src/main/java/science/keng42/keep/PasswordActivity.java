@@ -149,11 +149,6 @@ public class PasswordActivity extends AppCompatActivity {
         if (mAction == 1) {
             Intent intent = new Intent();
             intent.putExtra("oldPassword", myApp.getPassword());
-            if (myApp.getPassword() == null) {
-                Log.i("1984", "pwd ac null");
-            } else {
-                Log.i("1984", "pwd " + myApp.getPassword());
-            }
             setResult(RESULT_OK, intent);
         }
         finish();

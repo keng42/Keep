@@ -173,7 +173,6 @@ public class PhotoFragment extends Fragment {
     public void delete() {
         AttachmentDao ad = new AttachmentDao(getActivity());
         ad.delete(mAttachment.getId());
-        // TODO delete file
         File file = new File(getActivity().getExternalFilesDir(
                 Environment.DIRECTORY_PICTURES), mAttachment.getFilename());
         if (!file.delete()) {

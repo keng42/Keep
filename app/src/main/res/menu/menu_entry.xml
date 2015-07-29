@@ -36,4 +36,10 @@
         android:orderInCategory="100"
         android:title="@string/action_change_place"
         app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/action_hide"
+        android:orderInCategory="100"
+        android:title="@string/action_hide"
+        app:showAsAction="never"/>
 </menu>

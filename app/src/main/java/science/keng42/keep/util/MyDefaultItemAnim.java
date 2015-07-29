@@ -213,7 +213,6 @@ public class MyDefaultItemAnim extends RecyclerView.ItemAnimator {
 
         int[] location = new int[2];
         view.getLocationOnScreen(location);
-        Log.i("1984", "location " + location[0] + " : " + location[1]);
 
         animation.alpha(1).setDuration(getAddDuration())
                 .setListener(new VpaListenerAdapter() {

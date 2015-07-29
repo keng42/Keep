@@ -113,7 +113,6 @@ public class PlaceActivity extends AppCompatActivity implements
 
         mEtName.setText(mLocation.getTitle());
         mActvDescription.setText(mLocation.getDescription());
-        Log.i("1984", "initData");
     }
 
     /**
@@ -312,12 +311,9 @@ public class PlaceActivity extends AppCompatActivity implements
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
-        Log.e("1984", "onConnectionFailed: ConnectionResult.getErrorCode() = "
-                + connectionResult.getErrorCode());
-
         // TODO(Developer): Check error code and notify the user of error state and resolution.
         Toast.makeText(this,
-                "Could not connect to Google API Client: Error " + connectionResult.getErrorCode(),
+                getString(R.string.connect_google_api_error) + connectionResult.getErrorCode(),
                 Toast.LENGTH_SHORT).show();
     }
 }

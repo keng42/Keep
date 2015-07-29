@@ -404,16 +404,26 @@ public class HomeActivity extends AppCompatActivity {
         menu.findItem(R.id.item_all).setChecked(true);
 
         if (flag) {
-            // 取消选中，进入所有条目模式
-            updateTitle(getResources().getString(R.string.entries));
-            mItemNoFolder.setChecked(true);
-            EntryDao ed = new EntryDao(getApplicationContext());
-            List<Entry> list = ed.queryAll();
-            getCardsByEntries(list);
+            backHome();
         } else {
             menuItem.setChecked(true);
             getEntriesByFolder(menuItem.getTitle().toString());
+            updateRecyclerView();
+            mDrawerLayout.closeDrawers();
         }
+    }
+
+    /**
+     * 取消分类选择回到主页时调用
+     */
+    private void backHome() {
+        // 取消选中，进入所有条目模式
+        isHome = true;
+        updateTitle(getResources().getString(R.string.entries));
+        mItemNoFolder.setChecked(true);
+        EntryDao ed = new EntryDao(getApplicationContext());
+        List<Entry> list = ed.queryAll();
+        getCardsByEntries(list);
         updateRecyclerView();
         mDrawerLayout.closeDrawers();
     }
@@ -456,6 +466,12 @@ public class HomeActivity extends AppCompatActivity {
             mCheckedLocation.add(menuItem.getTitle().toString());
         }
 
+        menuItem.setChecked(!menuItem.isChecked());
+        if (mCheckedLocation.isEmpty()) {
+            backHome();
+            return;
+        }
+
         // 更新 Toolbar 标题
         StringBuilder sb = new StringBuilder();
         for (String s : mCheckedLocation) {
@@ -465,7 +481,6 @@ public class HomeActivity extends AppCompatActivity {
 
         getEntriesByPlaces();
         updateRecyclerView();
-        menuItem.setChecked(!menuItem.isChecked());
     }
 
     /**
@@ -476,7 +491,6 @@ public class HomeActivity extends AppCompatActivity {
         isHome = false;
         mCheckedLocation.clear();
         mDataSet.clear();
-//        mRecyclerView.removeAllViews();
 
         mNavigationView.getMenu().findItem(R.id.item_all).setChecked(true);
         mItemNoFolder.setChecked(true);
@@ -491,6 +505,12 @@ public class HomeActivity extends AppCompatActivity {
             mCheckedTag.remove("");
         }
 
+        menuItem.setChecked(!menuItem.isChecked());
+        if (mCheckedTag.isEmpty()) {
+            backHome();
+            return;
+        }
+
         StringBuilder sb = new StringBuilder();
         for (String s : mCheckedTag) {
             sb.append(s).append(" ");
@@ -499,7 +519,6 @@ public class HomeActivity extends AppCompatActivity {
 
         getEntriesByLabels();
         updateRecyclerView();
-        menuItem.setChecked(!menuItem.isChecked());
     }
 
     /**
@@ -514,9 +533,6 @@ public class HomeActivity extends AppCompatActivity {
         List<Entry> list = entryDao.getEntriesByTags(ss);
 
         getCardsByEntries(list);
-        for (String s : ss) {
-            Log.i("1984", "ss: " + s);
-        }
     }
 
     /**
@@ -624,23 +640,17 @@ public class HomeActivity extends AppCompatActivity {
                     break;
                 case 2:
                     // delete
-//                    mDataSet.remove(index);
                     deleteEntry(id, index);
                     break;
                 case 3:
                     // unarchive
-//                     mDataSet.add(index, entryToCard(ed.query(id)));
                     updateRecyclerViewByGroup(mNavigationView.getMenu().findItem(R.id.item_all));
                     break;
                 default:
                     break;
             }
-            // TODO smg
-            runOnUiThread(new Runnable() {
-                public void run() {
-                    mAdapter.notifyDataSetChanged();
-                }
-            });
+            // runOnUiThread 不应该出现在这里
+            mAdapter.notifyDataSetChanged();
         } else if (requestCode == REQUEST_NEW_ENTRY) {
             // 新建条目
             long id = data.getLongExtra("entryId", 1);
@@ -652,11 +662,6 @@ public class HomeActivity extends AppCompatActivity {
         } else if (requestCode == REQUEST_RESET_CODE) {
             finish();
             String oldPassword = data.getStringExtra("oldPassword");
-            if (oldPassword == null) {
-                Log.i("1984", "home null");
-            } else {
-                Log.i("1984", "home pwd " + oldPassword);
-            }
             Intent intent = new Intent(this, MainActivity.class);
             intent.putExtra("oldPassword", oldPassword);
             intent.putExtra("action", 1);
@@ -698,7 +703,7 @@ public class HomeActivity extends AppCompatActivity {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             if ((System.currentTimeMillis() - mKeyTime) > EXIT_WAITING_TIME) {
                 mKeyTime = System.currentTimeMillis();
-                Toast.makeText(this, "再按一次返回退出", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.press_once_again), Toast.LENGTH_SHORT).show();
             } else {
                 finish();
                 // TODO how to exit correctly

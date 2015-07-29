@@ -86,7 +86,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     Toast.LENGTH_SHORT).show();
         } else if (validateCode("")) {
             // 如果安全码设置为空，直接进入主界面
-            // TODO change encrypting warning view
             initView();
             encryptEntry();
         } else {

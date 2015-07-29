@@ -128,6 +128,9 @@
     <string name="tv_encrypting_clear_data">Encrypting clear data</string>
     <string name="tv_encrypt_ciphertext">Encrypting ciphertext</string>
     <string name="tv_encrypting_photos">Encrypting photos</string>
+    <string name="action_hide">Set text alpha</string>
+    <string name="connect_google_api_error" translatable="false">Could not connect to Google API Client: Error</string>
+    <string name="press_once_again">Press once again to exit</string>
 
 </resources>
 
