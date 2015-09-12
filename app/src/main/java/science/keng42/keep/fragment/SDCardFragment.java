@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.util.Xml;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -18,19 +19,29 @@ import android.view.ViewGroup;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
+import com.dropbox.client2.DropboxAPI;
+import com.dropbox.client2.android.AndroidAuthSession;
+import com.dropbox.client2.exception.DropboxException;
+import com.dropbox.client2.session.AppKeyPair;
+
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
+import science.keng42.keep.BackupActivity;
 import science.keng42.keep.R;
 import science.keng42.keep.adapter.SDCardRVAdapter;
 import science.keng42.keep.bean.Attachment;
@@ -44,6 +55,8 @@ import science.keng42.keep.dao.FolderDao;
 import science.keng42.keep.dao.LocationDao;
 import science.keng42.keep.dao.TagDao;
 import science.keng42.keep.util.Decompress;
+import science.keng42.keep.util.Secret;
+import science.keng42.keep.util.SecureTool;
 
 public class SDCardFragment extends Fragment
         implements SDCardRVAdapter.SDCardRVAdapterListener {
@@ -53,8 +66,8 @@ public class SDCardFragment extends Fragment
     private SDCardRVAdapter mAdapter;
     private List<String> mFileNames;
     private List<String> mInfos;
-    private RecyclerView mRecyclerView;
     private ProgressDialog mPd;
+    private DropboxAPI<AndroidAuthSession> mDBApi;
 
     private Handler handle = new Handler(new Handler.Callback() {
         @Override
@@ -62,20 +75,39 @@ public class SDCardFragment extends Fragment
             switch (msg.what) {
                 case 1:
                     mPd.dismiss();
-                    makeToast(getString(R.string.restore_finished));
+                    showToast(getString(R.string.restore_finished));
                     break;
                 case 2:
                     mPd.dismiss();
-                    makeToast(getString(R.string.restore_failed));
+                    showToast(getString(R.string.restore_failed));
+                    break;
+                case 3:
+                    mAdapter.notifyDataSetChanged();
+                    break;
+                case 4:
+                    restoreDataFromSDCard((String) msg.obj);
+                    break;
+                case 5:
+                    mPd.dismiss();
+                    showToast(getString(R.string.download_finish));
+                    ((BackupActivity) getActivity()).refreshView(0);
+                    break;
+                case 6:
+                    mPd.dismiss();
+                    showToast(getString(R.string.upload_finish));
+                    ((BackupActivity) getActivity()).refreshView(1);
+                    break;
+                case 7:
+                    showToast(getString(R.string.please_link_dropbox));
+                    break;
+                case 8:
+                    showToast(getString(R.string.connect_to_db_failed));
                     break;
             }
             return false;
         }
     });
-
-    private void makeToast(String str) {
-        Toast.makeText(getActivity(), str, Toast.LENGTH_SHORT).show();
-    }
+    private boolean mLinking = false;
 
     public static SDCardFragment newInstance(int page) {
         SDCardFragment fragment = new SDCardFragment();
@@ -99,23 +131,143 @@ public class SDCardFragment extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View view;
+        if (mPage == 1 && SecureTool.getDbAccessToken(getActivity()) == null) {
+            view = inflater.inflate(R.layout.fragment_dropbox, container, false);
+            view.findViewById(R.id.ll).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // link to dropbox and refresh view
+                    mLinking = true;
+                    linkToDropbox();
+                }
+            });
+
+            return view;
+        }
+
+        view = inflater.inflate(R.layout.fragment_sdcard, container, false);
         mFileNames = new ArrayList<>();
         mInfos = new ArrayList<>();
-        freshData();
-        View view = inflater.inflate(R.layout.fragment_sdcard, container, false);
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.rv);
-        mAdapter = new SDCardRVAdapter(mFileNames, mInfos);
-//        mListener = new SDCardRVAdapterListenerImpl();
+        if (mPage == 0) {
+            loadFilesFromSDCard();
+        } else {
+            dbAuth();
+        }
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.rv);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mFileNames = new ArrayList<>();
+        mInfos = new ArrayList<>();
+        mAdapter = new SDCardRVAdapter(mFileNames, mInfos, mPage);
         mAdapter.setListener(this);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mRecyclerView.setAdapter(mAdapter);
+        recyclerView.setAdapter(mAdapter);
+        refreshView();
         return view;
+    }
+
+    private void linkToDropbox() {
+        AppKeyPair appKeys = new AppKeyPair(Secret.DB_APP_KEY, Secret.DB_APP_SECRET);
+        AndroidAuthSession session = new AndroidAuthSession(appKeys);
+        mDBApi = new DropboxAPI<>(session);
+        mDBApi.getSession().startOAuth2Authentication(getActivity());
+    }
+
+    /**
+     * 获取 Dropbox 授权
+     */
+    private void dbAuth() {
+        AppKeyPair appKeys = new AppKeyPair(Secret.DB_APP_KEY, Secret.DB_APP_SECRET);
+        AndroidAuthSession session = new AndroidAuthSession(appKeys);
+        session.setOAuth2AccessToken(SecureTool.getDbAccessToken(getActivity()));
+        mDBApi = new DropboxAPI<>(session);
+    }
+
+    /**
+     * 从 SDCard 中获取文件列表信息
+     */
+    private void loadFilesFromSDCard() {
+        File appDir = new File(Environment.getExternalStorageDirectory(), "Keep");
+        if (!appDir.exists() || !appDir.isDirectory()) {
+            return;
+        }
+        String[] fileNames = appDir.list();
+        mFileNames.clear();
+        mFileNames.addAll(Arrays.asList(fileNames));
+        mInfos.clear();
+        for (File f : appDir.listFiles()) {
+            long time = f.lastModified();
+            long length = f.length();
+            mInfos.add(DateFormat.getDateTimeInstance()
+                    .format(new Date(time)) + " | " + formatSize(length));
+        }
+    }
+
+    /**
+     * 从 Dropbox 中获取文件列表信息
+     */
+    private void loadFilesFromDropbox() {
+        DropboxAPI.Entry entry;
+        try {
+            entry = mDBApi.metadata("/", 0, null, true, null);
+        } catch (DropboxException e) {
+            e.printStackTrace();
+            handle.sendEmptyMessage(8);
+            return;
+        }
+        mFileNames.clear();
+        mInfos.clear();
+        assert entry != null;
+        for (DropboxAPI.Entry e : entry.contents) {
+            mFileNames.add(e.fileName());
+            mInfos.add(reformatTime(e.modified) + " | " + e.size);
+        }
+    }
+
+    public String reformatTime(String src) {
+        SimpleDateFormat sdf = new SimpleDateFormat("EEE, dd MMM yyyy hh:mm:ss Z", Locale.US);
+        Date date = null;
+        try {
+            date = sdf.parse(src);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        DateFormat df = DateFormat.getDateTimeInstance();
+        return df.format(date);
+    }
+
+    /**
+     * 根据新数据刷新页面
+     */
+    public void refreshView() {
+        if (mPage == 0) {
+            loadFilesFromSDCard();
+            mAdapter.notifyDataSetChanged();
+        } else {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    loadFilesFromDropbox();
+                    handle.sendEmptyMessage(3);
+                }
+            }).start();
+        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        refreshView();
+        if (mLinking) {
+            if (mDBApi.getSession().authenticationSuccessful()) {
+                try {
+                    mDBApi.getSession().finishAuthentication();
+                    String accessToken = mDBApi.getSession().getOAuth2AccessToken();
+                    SecureTool.saveDbAccessToken(getActivity(), accessToken);
+                    mLinking = false;
+                } catch (IllegalStateException e) {
+                    Log.i("DbAuthLog", "Error authenticating", e);
+                }
+            }
+        }
     }
 
     @Override
@@ -138,12 +290,34 @@ public class SDCardFragment extends Fragment
     public void onMoreClick(final String filename, View view) {
         PopupMenu popupMenu = new PopupMenu(getActivity(), view);
         popupMenu.inflate(R.menu.menu_backup_more);
+        MenuItem item = popupMenu.getMenu().findItem(R.id.action_upload);
+        if (mPage == 1) {
+            item.setTitle("Download from Dropbox");
+        }
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.action_upload:
-                        Toast.makeText(getActivity(), getString(R.string.not_available), Toast.LENGTH_SHORT).show();
+                        if (mPage == 0) {
+                            showWaitDialog();
+                            new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    uploadFile(filename);
+                                    handle.sendEmptyMessage(6);
+                                }
+                            }).start();
+                        } else {
+                            showWaitDialog();
+                            new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    downloadFile(filename);
+                                    handle.sendEmptyMessage(5);
+                                }
+                            }).start();
+                        }
                         break;
                     case R.id.action_delete:
                         showDeleteDialog(filename);
@@ -155,63 +329,50 @@ public class SDCardFragment extends Fragment
         popupMenu.show();
     }
 
-    /**
-     * 从 SD card 中读取数据
-     */
-    private void freshData() {
-        File appDir = new File(Environment.getExternalStorageDirectory(), "Keep");
-        if (!appDir.exists() || !appDir.isDirectory()) {
-            return;
+    private void uploadFile(String filename) {
+        try {
+            if (SecureTool.getDbAccessToken(getActivity()) == null) {
+                handle.sendEmptyMessage(7);
+                return;
+            } else {
+                if (mDBApi == null) {
+                    dbAuth();
+                }
+            }
+            File file = new File(new File(Environment.getExternalStorageDirectory(), "Keep"), filename);
+            FileInputStream fis = new FileInputStream(file);
+            mDBApi.putFile(filename, fis, file.length(), null, null);
+            fis.close();
+        } catch (DropboxException | IOException e) {
+            e.printStackTrace();
         }
-        String[] fileNames = appDir.list();
-        mFileNames = Arrays.asList(fileNames);
-        mInfos.clear();
-        for (File f : appDir.listFiles()) {
-            long time = f.lastModified();
-            long length = f.length();
-            mInfos.add(DateFormat.getDateTimeInstance()
-                    .format(new Date(time)) + " | " + formatSize(length));
-        }
-    }
-
-    /**
-     * 返回 byte 的数据大小对应的文本
-     */
-    private String formatSize(long size) {
-        int k = 1024;
-        float kf = 1024f;
-        DecimalFormat format = new DecimalFormat("####.00");
-        if (size < k) {
-            return size + " bytes";
-        } else if (size < k * k) {
-            return format.format(size / kf) + " KB";
-        } else if (size / k < k * k) {
-            return format.format(size / kf / kf) + " MB";
-        } else if (size / k < k * k * k) {
-            return format.format(size / kf / kf / kf) + " GB";
-        } else {
-            return "size: error";
-        }
-    }
-
-    /**
-     * 根据新数据刷新页面
-     */
-    private void refreshView() {
-        freshData();
-        mAdapter = new SDCardRVAdapter(mFileNames, mInfos);
-        mAdapter.setListener(this);
-        mRecyclerView.setAdapter(mAdapter);
     }
 
     /**
      * 从备份文件中重置数据库
      */
     private void restoreData(final String filename) {
-        mPd = new ProgressDialog(getActivity());
-        mPd.setTitle(R.string.restore);
-        mPd.setMessage(getString(R.string.patience));
-        mPd.show();
+        if (mPage == 1) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    downloadFile(filename);
+                    Message msg = new Message();
+                    msg.what = 4;
+                    msg.obj = filename;
+                    handle.sendMessage(msg);
+                }
+            }).start();
+        } else {
+            restoreDataFromSDCard(filename);
+        }
+    }
+
+    /**
+     * 从 SDCard 中的文件还原数据
+     */
+    private void restoreDataFromSDCard(final String filename) {
+        showWaitDialog();
 
         new Thread(new Runnable() {
             @Override
@@ -221,6 +382,29 @@ public class SDCardFragment extends Fragment
                 handle.sendEmptyMessage(1);
             }
         }).start();
+    }
+
+    private void showWaitDialog() {
+        mPd = new ProgressDialog(getActivity());
+        mPd.setMessage(getString(R.string.wait));
+        mPd.show();
+    }
+
+    /**
+     * 从 Dropbox 中下载文件
+     */
+    private void downloadFile(String filename) {
+        try {
+            File file = new File(new File(Environment.getExternalStorageDirectory(), "Keep"), filename);
+            if (file.exists()) {
+                return;
+            }
+            FileOutputStream fos = new FileOutputStream(file);
+            mDBApi.getFile(filename, null, fos, null);
+            fos.close();
+        } catch (DropboxException | IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -352,7 +536,9 @@ public class SDCardFragment extends Fragment
             type = parser.next();
         }
         fis.close();
-        xmlFile.delete();
+        if (!xmlFile.delete()) {
+            showToast(getString(R.string.delete_file_failed));
+        }
         return new DB(folders, tags, locations, entries, attachments);
     }
 
@@ -365,7 +551,9 @@ public class SDCardFragment extends Fragment
         String path = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES) + File.separator;
         File[] files = new File(path).listFiles();
         for (File f : files) {
-            f.delete();
+            if (!f.delete()) {
+                showToast(getString(R.string.delete_file_failed));
+            }
         }
         Decompress decompress = new Decompress(file.getAbsolutePath(), path);
         decompress.unzip();
@@ -385,8 +573,7 @@ public class SDCardFragment extends Fragment
                         if (deleteFile(filename)) {
                             refreshView();
                         } else {
-                            Toast.makeText(getActivity(), getString(
-                                    R.string.delete_file_failed), Toast.LENGTH_SHORT).show();
+                            showToast(getString(R.string.delete_file_failed));
                         }
                     }
                 })
@@ -397,10 +584,28 @@ public class SDCardFragment extends Fragment
     /**
      * 删除文件
      */
-    private boolean deleteFile(String filename) {
-        File appDir = new File(Environment.getExternalStorageDirectory(), "Keep");
-        File file = new File(appDir, filename);
-        return file.delete();
+    private boolean deleteFile(final String filename) {
+        if (mPage == 1) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        mDBApi.delete(filename);
+                    } catch (DropboxException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
+        } else {
+            File appDir = new File(Environment.getExternalStorageDirectory(), "Keep");
+            File file = new File(appDir, filename);
+            return file.delete();
+        }
+        int index = mFileNames.indexOf(filename);
+        mFileNames.remove(index);
+        mInfos.remove(index);
+        mAdapter.notifyDataSetChanged();
+        return true;
     }
 
     /**
@@ -421,5 +626,29 @@ public class SDCardFragment extends Fragment
             this.entries = entries;
             this.attachments = attachments;
         }
+    }
+
+    /**
+     * 返回 byte 的数据大小对应的文本
+     */
+    private String formatSize(long size) {
+        int k = 1024;
+        float kf = 1024f;
+        DecimalFormat format = new DecimalFormat("####.00");
+        if (size < k) {
+            return size + " bytes";
+        } else if (size < k * k) {
+            return format.format(size / kf) + " KB";
+        } else if (size / k < k * k) {
+            return format.format(size / kf / kf) + " MB";
+        } else if (size / k < k * k * k) {
+            return format.format(size / kf / kf / kf) + " GB";
+        } else {
+            return "size: error";
+        }
+    }
+
+    private void showToast(String str) {
+        Toast.makeText(getActivity(), str, Toast.LENGTH_SHORT).show();
     }
 }

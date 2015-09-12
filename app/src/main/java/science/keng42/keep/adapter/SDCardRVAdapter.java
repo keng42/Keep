@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.text.DecimalFormat;
 import java.util.List;
 
 import science.keng42.keep.R;
@@ -19,13 +18,14 @@ import science.keng42.keep.R;
 public class SDCardRVAdapter extends Adapter<SDCardRVAdapter.SDCardViewHolder> {
     private List<String> mFileNames;
     private List<String> mInfos;
+    private int mPage;
     private SDCardRVAdapterListener listener = null;
 
-    public SDCardRVAdapter(List<String> mFileNames, List<String> mInfos) {
+    public SDCardRVAdapter(List<String> mFileNames, List<String> mInfos, int mPage) {
         this.mFileNames = mFileNames;
         this.mInfos = mInfos;
+        this.mPage = mPage;
     }
-
 
     /**
      * 设置列表项点击响应实例
@@ -38,6 +38,10 @@ public class SDCardRVAdapter extends Adapter<SDCardRVAdapter.SDCardViewHolder> {
     public SDCardViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.rv_backup_item, parent, false);
+        if (mPage == 1) {
+            ImageView iv = (ImageView) view.findViewById(R.id.iv);
+            iv.setImageResource(R.drawable.ic_backup_file_dropbox_grey600_24dp);
+        }
         return new SDCardViewHolder(view);
     }
 

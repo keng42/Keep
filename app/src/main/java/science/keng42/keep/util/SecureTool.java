@@ -23,7 +23,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import science.keng42.keep.MyApp;
-import science.keng42.keep.R;
 
 /**
  * 有关安全的工具类
@@ -38,6 +37,7 @@ public final class SecureTool {
     private static final String CRYPTO_IS_NOT_AVAILABLE = "Crypto 不可用，检查 Conceal 是否正确加载。";
     private static final String SALT = Secret.SALT;
     private static final String KEEP_CHARSET = "utf-8";
+    private static final String DB_ACCESS_TOKEN = "DB_ACCESS_TOKEN";
 
     private SecureTool() {
     }
@@ -126,6 +126,26 @@ public final class SecureTool {
         SharedPreferences sp = context.getSharedPreferences(SP_NAME,
                 Context.MODE_PRIVATE);
         return sp.getString(SECURE_CODE_KEY, null);
+    }
+
+    /**
+     * 保存 Dropbox 验证记号 SharePreferences
+     */
+    public static void saveDbAccessToken(Context context, String token) {
+        SharedPreferences sp = context.getSharedPreferences(SP_NAME,
+                Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString(DB_ACCESS_TOKEN, token);
+        editor.apply();
+    }
+
+    /**
+     * 获取 Dropbox 验证记号
+     */
+    public static String getDbAccessToken(Context context) {
+        SharedPreferences sp = context.getSharedPreferences(SP_NAME,
+                Context.MODE_PRIVATE);
+        return sp.getString(DB_ACCESS_TOKEN, null);
     }
 
     /**

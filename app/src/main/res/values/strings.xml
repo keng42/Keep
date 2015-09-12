@@ -150,6 +150,12 @@
     <string name="restore_warning">Restore will delete all current entries, are you sure?</string>
     <string name="restore_finished">Restore finished</string>
     <string name="restore_failed">Restore failed</string>
+    <string name="tv_link_dropbox">Link with Dropbox</string>
+    <string name="download_finish">Download finished</string>
+    <string name="upload_finish">Upload finished</string>
+    <string name="please_link_dropbox">Please link to Dropbox</string>
+    <string name="wait">Please wait...</string>
+    <string name="connect_to_db_failed">Connect to Dropbox failed...</string>
 
 </resources>
 

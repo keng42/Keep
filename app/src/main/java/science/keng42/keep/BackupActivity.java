@@ -44,13 +44,12 @@ import science.keng42.keep.dao.EntryDao;
 import science.keng42.keep.dao.FolderDao;
 import science.keng42.keep.dao.LocationDao;
 import science.keng42.keep.dao.TagDao;
+import science.keng42.keep.fragment.SDCardFragment;
 import science.keng42.keep.util.Compress;
 
 public class BackupActivity extends AppCompatActivity {
 
     private SDCardFragmentPagerAdapter mPagerAdapter;
-    private ViewPager mViewPager;
-    private TabLayout mTabLayout;
     private ProgressDialog mPd;
 
     private Handler handler = new Handler(new Handler.Callback() {
@@ -59,20 +58,20 @@ public class BackupActivity extends AppCompatActivity {
             switch (msg.what) {
                 case 1:
                     mPd.dismiss();
-                    makeToast(R.string.backup_finished);
-                    mPagerAdapter.getItem(0).onResume();
+                    showToast(R.string.backup_finished);
+                    refreshView(0);
                     break;
                 case 2:
                     mPd.dismiss();
-                    makeToast(R.string.create_app_dir_failed);
+                    showToast(R.string.create_app_dir_failed);
                     break;
             }
             return false;
         }
     });
 
-    private void makeToast(int id) {
-        Toast.makeText(this, getString(id), Toast.LENGTH_SHORT).show();
+    public void refreshView(int page) {
+        ((SDCardFragment) mPagerAdapter.getItem(page)).refreshView();
     }
 
     @Override
@@ -81,11 +80,13 @@ public class BackupActivity extends AppCompatActivity {
         setContentView(R.layout.activity_backup);
 
         mPagerAdapter = new SDCardFragmentPagerAdapter(getSupportFragmentManager());
-        mViewPager = (ViewPager) findViewById(R.id.view_pager);
-        mViewPager.setAdapter(mPagerAdapter);
-        mTabLayout = (TabLayout) findViewById(R.id.tab_layout);
-        mTabLayout.setupWithViewPager(mViewPager);
-        mTabLayout.setTabMode(TabLayout.MODE_FIXED);
+        ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+
+        viewPager.setAdapter(mPagerAdapter);
+        // TabLayout 和 ViewPager 绑定
+        tabLayout.setupWithViewPager(viewPager);
+        tabLayout.setTabMode(TabLayout.MODE_FIXED);
 
         initToolbar();
     }
@@ -114,6 +115,7 @@ public class BackupActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_backup, menu);
+        // 新建备份按钮设置为白色
         Drawable drawable = menu.findItem(R.id.action_backup).getIcon();
         if (drawable != null) {
             drawable.mutate();
@@ -151,7 +153,7 @@ public class BackupActivity extends AppCompatActivity {
     }
 
     /**
-     * 备份进度条
+     * 显示备份进度条并开新线程进行备份
      */
     private void createNewBackup() {
         mPd = new ProgressDialog(this);
@@ -203,7 +205,9 @@ public class BackupActivity extends AppCompatActivity {
         String _zipFile = appDir.getAbsolutePath() + "/Keep_" + timeStamp + ".zip";
         Compress compress = new Compress(_files, _zipFile);
         compress.zip();
-        xmlFile.delete();
+        if (!xmlFile.delete()) {
+            showToast(R.string.delete_file_failed);
+        }
     }
 
     /**
@@ -350,5 +354,9 @@ public class BackupActivity extends AppCompatActivity {
         fos.close();
 
         return attachments;
+    }
+
+    private void showToast(int id) {
+        Toast.makeText(this, getString(id), Toast.LENGTH_SHORT).show();
     }
 }
