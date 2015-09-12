@@ -173,7 +173,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }.start();
     }
 
-
     /**
      * 重新加密使用默认密码加密的条目
      */

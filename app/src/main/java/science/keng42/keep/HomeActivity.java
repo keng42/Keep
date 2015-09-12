@@ -611,6 +611,9 @@ public class HomeActivity extends AppCompatActivity {
             case R.id.action_reset_code:
                 showResetCodeDialog();
                 break;
+            case R.id.action_backup_and_restore:
+                goBackupAndRestore();
+                break;
             default:
                 break;
         }
@@ -918,6 +921,10 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
         d.show();
+    }
+
+    private void goBackupAndRestore() {
+        startActivity(new Intent(this, BackupActivity.class));
     }
 
     /**

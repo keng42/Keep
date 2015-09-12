@@ -15,6 +15,7 @@ import science.keng42.keep.bean.Entry;
  * Created by Keng on 2015/6/1
  */
 public class EntryDao {
+
     private static final String DATE = "date";
     private static final String TITLE = "title";
     private static final String TEXT = "text";
@@ -30,6 +31,23 @@ public class EntryDao {
 
     public EntryDao(Context context) {
         this.mHelper = new JKiSQLiteOpenHelper(context);
+    }
+
+    public void restore(Entry entry) {
+        SQLiteDatabase db = mHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put(ID, entry.getId());
+        values.put(DATE, entry.getDate());
+        values.put(TITLE, entry.getTitle());
+        values.put(TEXT, entry.getText());
+        values.put(FOLDER_ID, entry.getFolderId());
+        values.put(LOCATION_ID, entry.getLocationId());
+        values.put(TAGS, entry.getTags());
+        values.put(ARCHIVED, entry.getArchived());
+        values.put(ENCRYPTED, entry.getEncrypted());
+        db.insert(ENTRIES, null, values);
+        db.close();
     }
 
     public void insert(Entry entry) {

@@ -22,6 +22,12 @@
         android:title="@string/action_reset_code"
         app:showAsAction="never"/>
 
+    <item
+        android:id="@+id/action_backup_and_restore"
+        android:orderInCategory="99"
+        android:title="@string/action_backup_and_restore"
+        app:showAsAction="never"/>
+
     <!--<item-->
     <!--android:id="@+id/action_settings"-->
     <!--android:orderInCategory="100"-->

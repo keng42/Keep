@@ -14,14 +14,26 @@ import science.keng42.keep.bean.Attachment;
  * Created by Keng on 2015/6/1
  */
 public class AttachmentDao {
-    private JKiSQLiteOpenHelper mHelper;
-
+    private static final String ID = "_id";
     private static final String ENTRY_ID = "entry_id";
     private static final String FILE_NAME = "filename";
     private static final String ATTACHMENTS = "attachments";
 
+    private JKiSQLiteOpenHelper mHelper;
+
     public AttachmentDao(Context context) {
         this.mHelper = new JKiSQLiteOpenHelper(context);
+    }
+
+    public final void restore(Attachment attachment) {
+        SQLiteDatabase db = mHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put(ID, attachment.getId());
+        values.put(ENTRY_ID, attachment.getEntryId());
+        values.put(FILE_NAME, attachment.getFilename());
+        db.insert(ATTACHMENTS, null, values);
+        db.close();
     }
 
     public final void insert(Attachment attachment) {

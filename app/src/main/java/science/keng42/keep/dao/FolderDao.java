@@ -15,6 +15,7 @@ import science.keng42.keep.bean.Folder;
  */
 public class FolderDao {
 
+    private static final String ID = "_id";
     private static final String TITLE = "title";
     private static final String COLOR = "color";
     private static final String FOLDERS = "folders";
@@ -22,6 +23,18 @@ public class FolderDao {
 
     public FolderDao(Context context) {
         this.mHelper = new JKiSQLiteOpenHelper(context);
+    }
+
+    public void restore(Folder folder) {
+        SQLiteDatabase db = mHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put(ID,folder.getId());
+        values.put(TITLE, folder.getTitle());
+        values.put(COLOR, folder.getColor());
+
+        db.insert(FOLDERS, null, values);
+        db.close();
     }
 
     public void insert(Folder folder) {

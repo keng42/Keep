@@ -15,12 +15,22 @@ import science.keng42.keep.bean.Tag;
  */
 public class TagDao {
 
+    private static final String ID = "_id";
     private static final String TITLE = "title";
     private static final String TAGS = "tags";
     private JKiSQLiteOpenHelper mHelper;
 
     public TagDao(Context context) {
         this.mHelper = new JKiSQLiteOpenHelper(context);
+    }
+
+    public void restore(Tag tag) {
+        SQLiteDatabase db = mHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(TITLE, tag.getTitle());
+        values.put(ID, tag.getId());
+        db.insert(TAGS, null, values);
+        db.close();
     }
 
     public void insert(Tag tag) {

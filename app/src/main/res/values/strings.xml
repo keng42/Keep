@@ -131,6 +131,25 @@
     <string name="action_hide">Set text alpha</string>
     <string name="connect_google_api_error" translatable="false">Could not connect to Google API Client: Error</string>
     <string name="press_once_again">Press once again to exit</string>
+    <string name="title_activity_backup" translatable="false">BackupActivity</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
+    <string name="action_backup_and_restore"><![CDATA[Backup & restore]]></string>
+    <string name="action_backup">Backup</string>
+    <string name="backuping">Backuping...</string>
+    <string name="patience">Please be patience</string>
+    <string name="backup_finished">Backup finished</string>
+    <string name="create_app_dir_failed">Create app dir failed</string>
+    <string name="upload_to_dropbox">Upload to Dropbox</string>
+    <string name="delete_backup">Delete</string>
+    <string name="delete_file">Delete file</string>
+    <string name="delete_file_failed">Delete file failed!</string>
+    <string name="not_available">Not available</string>
+    <string name="restore">Restore</string>
+    <string name="restore_warning">Restore will delete all current entries, are you sure?</string>
+    <string name="restore_finished">Restore finished</string>
+    <string name="restore_failed">Restore failed</string>
 
 </resources>
 

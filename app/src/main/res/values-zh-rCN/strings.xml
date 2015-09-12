@@ -131,6 +131,22 @@
     <string name="tv_encrypting_photos">图片加密中</string>
     <string name="action_hide">设置文字透明度</string>
     <string name="press_once_again">再按一次返回退出</string>
+    <string name="action_backup">备份</string>
+    <string name="action_backup_and_restore">备份和重置</string>
+    <string name="backup_finished">备份完成</string>
+    <string name="backuping">备份中</string>
+    <string name="create_app_dir_failed">新建文件夹失败</string>
+    <string name="delete_backup">删除</string>
+    <string name="delete_file">删除文件</string>
+    <string name="delete_file_failed">删除文件失败！</string>
+    <string name="hello_blank_fragment"></string>
+    <string name="not_available">暂时不可用</string>
+    <string name="restore">恢复</string>
+    <string name="restore_failed">恢复失败</string>
+    <string name="restore_finished">恢复完成</string>
+    <string name="restore_warning">恢复过程中会清楚现有的数据，确认？</string>
+    <string name="title_activity_backup"></string>
+    <string name="upload_to_dropbox">上传到 Dropbox</string>
 
 </resources>
 

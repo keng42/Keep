@@ -15,6 +15,7 @@ import science.keng42.keep.bean.Location;
  */
 public class LocationDao {
 
+    private static final String ID = "_id";
     private static final String TITLE = "title";
     private static final String ADDRESS = "address";
     private static final String LAT = "lat";
@@ -25,6 +26,20 @@ public class LocationDao {
 
     public LocationDao(Context context) {
         this.mHelper = new JKiSQLiteOpenHelper(context);
+    }
+
+    public void restore(Location location) {
+        SQLiteDatabase db = mHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put(ID, location.getId());
+        values.put(TITLE, location.getTitle());
+        values.put(ADDRESS, location.getAddress());
+        values.put(LAT, location.getLat());
+        values.put(LON, location.getLon());
+        values.put(DESCRIPTION, location.getDescription());
+        db.insert(LOCATIONS, null, values);
+        db.close();
     }
 
     public void insert(Location location) {
@@ -97,7 +112,7 @@ public class LocationDao {
             String lon = c.getString(c.getColumnIndex(LON));
             String description = c.getString(c.getColumnIndex(DESCRIPTION));
 
-            location = new Location(id, title, address,description ,lat, lon );
+            location = new Location(id, title, address, description, lat, lon);
         }
         c.close();
         db.close();
