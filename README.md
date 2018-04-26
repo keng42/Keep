@@ -23,7 +23,7 @@
 <img src="https://raw.githubusercontent.com/keng42/Keep/master/screenshots/11Labels.png" width = "360" height = "640" alt="Keep"/>
 
 ### 通过 Google Place 添加位置
-调用的是 [Google Places API](https://developers.google.com/places/?hl=zh-cn)
+调用的是 [Google Places API](https://developers.google.com/places/?hl=zh-cn)  
 <img src="https://raw.githubusercontent.com/keng42/Keep/master/screenshots/12AutoPlace.png" width = "360" height = "640" alt="Keep"/>
 <img src="https://raw.githubusercontent.com/keng42/Keep/master/screenshots/13PickPlace.png" width = "360" height = "640" alt="Keep"/>
 
